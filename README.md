@@ -1,6 +1,8 @@
 c3-linearization
 ================
 
+[![Build Status](https://travis-ci.org/federicobond/c3-linearization.svg?branch=master)](https://travis-ci.org/federicobond/c3-linearization)
+
 A package for doing Python-style C3-linearization in ECMAScript.
 
 ## Usage
