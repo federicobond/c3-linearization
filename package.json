@@ -1,0 +1,30 @@
+{
+  "name": "c3-linearization",
+  "version": "0.1.0",
+  "description": "A package that implements the C3 linearization algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint .",
+    "prettier": "prettier --write *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/federicobond/c3-linearization.git"
+  },
+  "keywords": [
+    "c3",
+    "linearization"
+  ],
+  "author": "Federico Bond",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/federicobond/c3-linearization/issues"
+  },
+  "homepage": "https://github.com/federicobond/c3-linearization#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "mocha": "^5.0.5",
+    "prettier": "^1.11.1"
+  }
+}
