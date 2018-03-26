@@ -19,4 +19,34 @@ describe('C3', function() {
       {'A': ['A'], 'B': ['B'], 'C': ['C'], 'D': ['D'], 'E': ['E'], 'K1': ['K1', 'A', 'B', 'C'], 'K2': ['K2', 'D', 'B', 'E'], 'K3': ['K3', 'D', 'A'], 'Z': ['Z', 'K1', 'K2', 'K3', 'D', 'A', 'B', 'C', 'E']}
     )
   })
+
+  it('linearizes with missing elements', function() {
+    assert.deepEqual(
+      linearize({'K1': ['A', 'B', 'C'], 'K2': ['D', 'B', 'E'], 'K3': ['D', 'A'], 'Z': ['K1', 'K2', 'K3']}),
+      {'A': ['A'], 'B': ['B'], 'C': ['C'], 'D': ['D'], 'E': ['E'], 'K1': ['K1', 'A', 'B', 'C'], 'K2': ['K2', 'D', 'B', 'E'], 'K3': ['K3', 'D', 'A'], 'Z': ['Z', 'K1', 'K2', 'K3', 'D', 'A', 'B', 'C', 'E']}
+    )
+  })
+
+  it('linearizes well Solidity and Python', function() {
+    const input = {
+      ERC721Enumerable: ['ERC721Basic'],
+      ERC721Metadata: ['ERC721Basic'],
+      ERC721: ['ERC721Basic', 'ERC721Enumerable', 'ERC721Metadata'],
+    };
+
+    assert.deepEqual(
+      linearize(input), {
+        ERC721Enumerable: ['ERC721Enumerable', 'ERC721Basic'],
+        ERC721Metadata: ['ERC721Metadata', 'ERC721Basic'],
+        ERC721: ['ERC721', 'ERC721Enumerable', 'ERC721Metadata', 'ERC721Basic'],
+        ERC721Basic: ['ERC721Basic']
+      }
+    );
+
+    assert.throws(
+      function() { linearize(input, { python: true }) },
+      Error
+    );
+  })
+
 })

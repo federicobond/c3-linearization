@@ -1,8 +1,7 @@
-'use strict';
+"use strict";
 
 function merge(sequences) {
   let result = [];
-
   sequences = sequences.map(s => s.slice());
 
   while (sequences.length > 0) {
@@ -12,7 +11,11 @@ function merge(sequences) {
     for (let seq of sequences) {
       head = seq[0];
 
-      if (!sequences.find(s => s !== seq && s.slice(1).includes(head))) {
+      function isBadHead(s) {
+        return s !== seq && s.slice(1).includes(head);
+      }
+
+      if (!sequences.find(isBadHead)) {
         found = true;
         result.push(head);
 
@@ -37,32 +40,38 @@ function merge(sequences) {
   return result;
 }
 
-function _linearize(graph, head, results) {
+function _linearize(graph, head, results, options) {
   if (results.hasOwnProperty(head)) {
     return results[head];
   }
 
-  if (graph[head].length === 0) {
+  const parents = graph[head];
+
+  if (!parents || parents.length === 0) {
     const res = [head];
     results[head] = res;
     return res;
   }
 
-  let sequences = graph[head]
-    .map(x => _linearize(graph, x, results))
-    .concat([graph[head].slice()]);
+  let sequences = parents.map(x => _linearize(graph, x, results, options));
+
+  if (options.python === true) {
+    sequences = sequences.concat([parents]);
+  }
 
   const res = [head].concat(merge(sequences));
   results[head] = res;
   return res;
 }
 
-function linearize(graph) {
+function linearize(graph, options) {
+  if (typeof options === "undefined") options = {};
+
   const results = {};
   const heads = Object.keys(graph);
 
   for (let head of heads) {
-    _linearize(graph, head, results);
+    _linearize(graph, head, results, options);
   }
 
   return results;

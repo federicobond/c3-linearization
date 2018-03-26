@@ -26,6 +26,14 @@ linearize({
 // }
 ```
 
+This works well for languages like Solidity, but Python is a bit more strict
+in the cases that it accepts. For Python-style MRO, set the `python` option to
+true.
+
+```javascript
+linearize('A': ['B', 'C'], { python: true })
+```
+
 ## Author
 
 Federico Bond
