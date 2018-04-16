@@ -40,10 +40,15 @@ function merge(sequences) {
   return result;
 }
 
-function _linearize(graph, head, results, options) {
+function _linearize(graph, head, results, visiting, options) {
   if (results.hasOwnProperty(head)) {
     return results[head];
   }
+
+  if (visiting.has(head)) {
+    throw new Error('circular dependency found');
+  }
+  visiting.add(head);
 
   const parents = graph[head];
 
@@ -53,7 +58,7 @@ function _linearize(graph, head, results, options) {
     return res;
   }
 
-  let sequences = parents.map(x => _linearize(graph, x, results, options));
+  let sequences = parents.map(x => _linearize(graph, x, results, visiting, options));
 
   if (options.python === true) {
     sequences = sequences.concat([parents]);
@@ -61,6 +66,9 @@ function _linearize(graph, head, results, options) {
 
   const res = [head].concat(merge(sequences));
   results[head] = res;
+
+  visiting.delete(head);
+
   return res;
 }
 
@@ -68,10 +76,11 @@ function linearize(graph, options) {
   if (typeof options === "undefined") options = {};
 
   const results = {};
+  const visiting = new Set();
   const heads = Object.keys(graph);
 
   for (let head of heads) {
-    _linearize(graph, head, results, options);
+    _linearize(graph, head, results, visiting, options);
   }
 
   return results;

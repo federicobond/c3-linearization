@@ -49,4 +49,11 @@ describe('C3', function() {
     );
   })
 
+  it('reports circular dependencies correctly', function () {
+    assert.throws(
+      function() { linearize({ a: ['b'], b: ['c'], c: ['b'] }) },
+      'circular dependency found'
+    )
+  })
+
 })
