@@ -1,3 +1,5 @@
+> ️️️️️⚠️ Notice: this package has a known issue when linearizing Solidity inheritance chains. It's being discussed at [ethereum/solidity#3856](https://github.com/ethereum/solidity/issues/3856).
+
 c3-linearization
 ================
 
