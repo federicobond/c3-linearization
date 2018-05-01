@@ -1,4 +1,3 @@
-> ️️️️️⚠️ Notice: this package has a known issue when linearizing Solidity inheritance chains. It's being discussed at [ethereum/solidity#3856](https://github.com/ethereum/solidity/issues/3856).
 
 c3-linearization
 ================
@@ -28,9 +27,19 @@ linearize({
 // }
 ```
 
-This works well for languages like Solidity, but Python is a bit more strict
-in the cases that it accepts. For Python-style MRO, set the `python` option to
-true.
+### Important notes
+
+*Solidity* does linearization from right to left (you write the parents from most
+base-like to most derived). This is exactly the reverse as in Python, where you
+put the most derived classes to the left. To get correct results with Solidity,
+set the `reverse` option to true.
+
+```javascript
+linearize('A': ['B', 'C'], { reverse: true })
+```
+
+*Python* is also a bit more strict in the cases that it accepts. For accurate
+Python MRO, set the `python` option to true.
 
 ```javascript
 linearize('A': ['B', 'C'], { python: true })

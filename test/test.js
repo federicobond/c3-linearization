@@ -35,10 +35,10 @@ describe('C3', function() {
     };
 
     assert.deepEqual(
-      linearize(input), {
+      linearize(input, { reverse: true }), {
         ERC721Enumerable: ['ERC721Enumerable', 'ERC721Basic'],
         ERC721Metadata: ['ERC721Metadata', 'ERC721Basic'],
-        ERC721: ['ERC721', 'ERC721Enumerable', 'ERC721Metadata', 'ERC721Basic'],
+        ERC721: ['ERC721', 'ERC721Metadata', 'ERC721Enumerable', 'ERC721Basic'],
         ERC721Basic: ['ERC721Basic']
       }
     );

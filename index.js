@@ -1,5 +1,10 @@
 "use strict";
 
+const defaultOptions = {
+  reverse: false,
+  python: false
+}
+
 function merge(sequences) {
   let result = [];
   sequences = sequences.map(s => s.slice());
@@ -50,12 +55,16 @@ function _linearize(graph, head, results, visiting, options) {
   }
   visiting.add(head);
 
-  const parents = graph[head];
+  let parents = graph[head];
 
   if (!parents || parents.length === 0) {
     const res = [head];
     results[head] = res;
     return res;
+  }
+
+  if (options.reverse === true) {
+    parents = parents.slice().reverse();
   }
 
   let sequences = parents.map(x => _linearize(graph, x, results, visiting, options));
@@ -73,7 +82,7 @@ function _linearize(graph, head, results, visiting, options) {
 }
 
 function linearize(graph, options) {
-  if (typeof options === "undefined") options = {};
+  options = Object.assign({}, defaultOptions, options)
 
   const results = {};
   const visiting = new Set();
